@@ -46,9 +46,15 @@ resource "aws_iam_role_policy" "lambda_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents",
           "dynamodb:GetItem",
+          "lambda:InvokeFunction"
         ]
         Effect   = "Allow"
         Resource = "*"
+      },
+      {
+        Action   = "lambda:InvokeFunction"
+        Effect   = "Allow"
+        Resource = var.LEDAA_LOAD_DATA_ARN
       }
     ]
   })
@@ -116,12 +122,12 @@ resource "aws_iam_role_policy" "eventbridge_policy" {
 }
 
 resource "aws_scheduler_schedule" "ledaa_updates_scanner_schedule" {
-  name               = "ledaa_updates_scanner_schedule"
+  name                = "ledaa_updates_scanner_schedule"
   schedule_expression = "rate(10 minutes)"
-  group_name         = "default"
+  group_name          = "default"
 
   target {
-    arn = aws_lambda_function.ledaa_updates_scanner.arn
+    arn      = aws_lambda_function.ledaa_updates_scanner.arn
     role_arn = aws_iam_role.eventbridge_role.arn
   }
 

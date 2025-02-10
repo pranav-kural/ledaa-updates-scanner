@@ -90,18 +90,21 @@ def scrape_url_and_compare_hash(url: str):
     if has_hash_changed:
         print(f"Invoking LEDAA Load Data Lambda for {url}")
         lambda_client = boto3.client('lambda')
-        lambda_invoke_status_response = lambda_client.invoke(
-            FunctionName='ledaa_load_data',
-            InvocationType='Event',
-            Payload='{"url": "' + url + '"}'
-        )
-        # check invocation status
-        if lambda_invoke_status_response['StatusCode'] != 202:
-            print(f"Error: Failed to invoke LEDAA Load Data Lambda for {url}")
-            # Log the error
-            print(lambda_invoke_status_response)
-        else:
-            print(f"LEDAA Load Data Lambda invoked successfully for {url}")
+        try:
+            lambda_invoke_status_response = lambda_client.invoke(
+                FunctionName='ledaa_load_data',
+                InvocationType='Event',
+                Payload='{"url": "' + url + '"}'
+            )
+            # check invocation status
+            if lambda_invoke_status_response['StatusCode'] != 202:
+                print(f"Error: Failed to invoke LEDAA Load Data Lambda for {url}")
+                # Log the error
+                print(lambda_invoke_status_response)
+            else:
+                print(f"LEDAA Load Data Lambda invoked successfully for {url}")
+        except Exception as e:
+            print(f"An error occurred while invoking LEDAA Load Data Lambda: {e}")
 
 # Get all the links to the documentation pages
 def get_all_doc_links():
