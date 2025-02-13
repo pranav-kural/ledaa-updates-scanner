@@ -61,8 +61,9 @@ resource "aws_iam_role_policy" "lambda_policy" {
 }
 
 resource "aws_lambda_layer_version" "lambda_layer" {
-  filename   = "packages/ledaa_updates_scanner_lambda_layer.zip"
-  layer_name = "LEDAA-Updates-Scanner-Layer"
+  filename         = "packages/ledaa_updates_scanner_lambda_layer.zip"
+  layer_name       = "LEDAA-Updates-Scanner-Layer"
+  source_code_hash = filebase64sha256("packages/ledaa_updates_scanner_lambda_layer.zip")
 
   compatible_runtimes = ["python3.13"]
 }
@@ -85,7 +86,7 @@ resource "aws_lambda_function" "ledaa_updates_scanner" {
 
   layers = [aws_lambda_layer_version.lambda_layer.arn]
 
-  timeout = 10
+  timeout = 60
 }
 
 resource "aws_iam_role" "eventbridge_role" {
@@ -123,7 +124,7 @@ resource "aws_iam_role_policy" "eventbridge_policy" {
 
 resource "aws_scheduler_schedule" "ledaa_updates_scanner_schedule" {
   name                = "ledaa_updates_scanner_schedule"
-  schedule_expression = "rate(10 minutes)"
+  schedule_expression = "rate(1 day)"
   group_name          = "default"
 
   target {
