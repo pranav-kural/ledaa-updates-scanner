@@ -11,6 +11,8 @@ Basically, this programs acts as a sort of scanner that initiates the data loadi
 
 This scanner function is deployed as an **AWS Lambda** function and is triggered at a specific interval using **AWS EventBridge Schedule**.
 
+![ledaa-updates-scanner](https://github.com/user-attachments/assets/79ff21ed-ceae-448a-8ee8-f08c8e8516fb)
+
 ## Process Flow
 
 1. **Web Scraping**: The program receives `URL` of the webpage as an argument and uses `BeautifulSoup` to scrap HTML data from the given URL.
