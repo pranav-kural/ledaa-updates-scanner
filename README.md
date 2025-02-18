@@ -13,7 +13,7 @@ This scanner function is deployed as an **AWS Lambda** function and is triggered
 
 ![ledaa-updates-scanner](https://github.com/user-attachments/assets/4a28c20a-4e1b-4875-833d-b8ebd1d2d029)
 
-## Process Flow
+## Updates Scanner Process Flow
 
 1. **Web Scraping**: The program receives `URL` of the webpage as an argument and uses `BeautifulSoup` to scrap HTML data from the given URL.
 2. **Primary Section HTML Extraction**: First, we extract the HTML of only the section of the documentation page we are concerned with, i.e., we exclude the header, footer, and other irrelevant sections.
@@ -22,6 +22,16 @@ This scanner function is deployed as an **AWS Lambda** function and is triggered
 5. **Data Loading**: If the hash is different, we initiate the process of data loading for the given `URL`.
 
 Code for the above steps can be found in the `core.py` file.
+
+## Overall LEDAA Data Process Flow
+
+Below is the process flow for how ground truth data updates are handled and how the knowledge base is effectively updated.
+
+1. [`ledaa_updates_scanner`](https://github.com/pranav-kural/ledaa-updates-scanner) Lambda function monitors for changes in content of documentation.
+2. On detecting changes, it triggers the [`ledaa_load_data`](https://github.com/pranav-kural/ledaa-load-data) Lambda function passing it the URL of webpage.
+3. `ledaa_load_data` Lambda function invokes the [`ledaa_text_splitter`](https://github.com/pranav-kural/ledaa-text-splitter) Lambda function to initiate the process of scraping data from a given URL and to get a list of strings (representing text chunks or documents) which will be used in data ingestion.
+4. `ledaa_text_splitter` Lambda function invokes the [`ledaa_web_scrapper`](https://github.com/pranav-kural/ledaa-web-scrapper) Lambda function to scrape the URL and store the processed markdown data in S3. `ledaa_web_scrapper` function also stores the hash of the processed data in DynamoDB which will later be compared by `ledaa_updates_scanner` function to detect changes.
+5. On receiving processed document chunks back, `ledaa_load_data` Lambda function stores the data in the vector store.
 
 ## AWS Lambda Deployment
 
