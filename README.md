@@ -11,7 +11,7 @@ Basically, this programs acts as a sort of scanner that initiates the data loadi
 
 This scanner function is deployed as an **AWS Lambda** function and is triggered at a specific interval using **AWS EventBridge Schedule**.
 
-![ledaa-updates-scanner](https://github.com/user-attachments/assets/79ff21ed-ceae-448a-8ee8-f08c8e8516fb)
+![ledaa-updates-scanner](https://github.com/user-attachments/assets/4a28c20a-4e1b-4875-833d-b8ebd1d2d029)
 
 ## Process Flow
 
