@@ -1,6 +1,8 @@
 # LEDAA Updates Scanner
 
-This program scraps HTML from a given specific [Fragment's Ledger API documentation](https://fragment.dev/docs) webpage and then:
+LEDAA project is about building a conversational AI assistant for [FRAGMENT (documentation)](https://fragment.dev/docs). 
+
+**LEDAA Updates Scanner** component scraps HTML from a given specific [FRAGMENT (documentation)](https://fragment.dev/docs) webpage and then:
 
 1. Extracts HTML for primary section (i.e., section of importance, excluding header, footer, etc.).
 2. Generates SHA-256 hash of the primary section HTML.
@@ -10,6 +12,8 @@ This program scraps HTML from a given specific [Fragment's Ledger API documentat
 Basically, this programs acts as a sort of scanner that initiates the data loading process for a specific URL when it detects that the data for that URL has changed. This ensures that the knowledge base (vector store data) for the RAG-pipeline supporting conversational applications for Ledger API documentation is always up-to-date. The data on the Ledger API's documentation website is considered the **Single Source of Truth**.
 
 This scanner function is deployed as an **AWS Lambda** function and is triggered at a specific interval using **AWS EventBridge Schedule**.
+
+To learn more check: [Building AI Assistant for FRAGMENT documentation](https://www.pkural.ca/blog/posts/fragment/)
 
 ![ledaa-updates-scanner](https://github.com/user-attachments/assets/4a28c20a-4e1b-4875-833d-b8ebd1d2d029)
 
